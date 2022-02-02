@@ -15,16 +15,19 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
+import React from "react";
 
-const LinkItem = (href: any, path: any, children: any) => {
+const LinkItem: any = ({ href, path, children }) => {
   const active = path === href;
-  const inActiveColor = useColorModeValue("gray200", "whiteAlpha900");
+  const inactiveColor = useColorModeValue("gray200", "whiteAlpha.900");
   return (
-    <NextLink href={href}>
+    <NextLink href={href} passHref>
       <Link
         p={2}
-        bg={active ? "glassTeal" : undefined}
-        color={active ? "#202023" : inActiveColor}
+        bg="undefined"
+        color="inactiveColor"
+        // bg={active ? "glassTeal" : undefined}
+        // color={active ? "#202023" : inactiveColor}
       >
         {children}
       </Link>
@@ -33,7 +36,7 @@ const LinkItem = (href: any, path: any, children: any) => {
 };
 
 const Navbar = (props: any) => {
-  const { path } = props;
+  const path = props;
   return (
     <Box
       position="fixed"
@@ -51,12 +54,53 @@ const Navbar = (props: any) => {
         wrap="wrap"
         align="center"
         justify="space-between"
-      ></Container>
-      <Flex align="center" mr={5}>
-        <Heading as="h1" size="lg" letterSpacing={"tighter"}>
-          <Logo />
-        </Heading>
-      </Flex>
+      >
+        <Flex align="center" mr={5}>
+          <Heading as="h1" size="lg" letterSpacing={"tighter"}>
+            <Logo />
+          </Heading>
+        </Flex>
+
+        <Stack
+          direction={{ base: "column", md: "row" }}
+          display={{ base: "none", md: "flex" }}
+          width={{ base: "full", md: "auto" }}
+          alignItems="center"
+          flexGrow={1}
+          mt={{ base: 4, nmd: 0 }}
+        >
+          <LinkItem href="/" path="/">
+            home
+          </LinkItem>
+          <LinkItem href="/posts" path="/">
+            posts
+          </LinkItem>
+        </Stack>
+
+        <Box flex={1} align="right">
+          <Box ml={2} display={{ base: "inline-block", md: "none" }}>
+            <Menu>
+              <MenuButton
+                as={IconButton}
+                icon={<HamburgerIcon />}
+                variant="outline"
+                aria-label="Options"
+              />
+              <MenuList>
+                <NextLink href="/" passHref>
+                  <MenuItem as={Link}>About</MenuItem>
+                </NextLink>
+                <NextLink href="/works" passHref>
+                  <MenuItem as={Link}>Works</MenuItem>
+                </NextLink>
+                <NextLink href="/posts" passHref>
+                  <MenuItem as={Link}>Posts</MenuItem>
+                </NextLink>
+              </MenuList>
+            </Menu>
+          </Box>
+        </Box>
+      </Container>
     </Box>
   );
 };
